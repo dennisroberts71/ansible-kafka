@@ -1,0 +1,6 @@
+---
+- name: ensure that epel is installed
+  become: yes
+  yum:
+    name: epel-release
+    state: latest

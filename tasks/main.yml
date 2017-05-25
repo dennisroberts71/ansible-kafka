@@ -1,42 +1,16 @@
 ---
-- name: ensure that epel is installed
-  become: yes
-  yum:
-    name: epel-release
-    state: latest
+- include: epel.yml
 
-- name: ensure that java is installed
-  become: yes
-  yum:
-    name: java-1.8.0-openjdk-devel
-    state: latest
+- include: java.yml
 
-- name: java environment variables
-  become: yes
-  copy:
-    src: java.sh
-    dest: /etc/profile.d/java.sh
-    group: root
-    owner: root
-    mode: 0644
+- include: scala.yml
 
-- name: install scala
-  become: yes
-  yum:
-    name: "{{ scala_rpm_url }}"
-    state: present
+- include: apache-download.yml
+  vars:
+    url_path: "{{ zookeeper_url_path }}"
+    file_name: "{{ zookeeper_tgz_file }}"
 
-- name: determine the apache mirror to use
-  uri:
-    url: "{{ apache_mirror_url }}?path={{ kafka_url_path }}&as_json"
-    method: GET
-    return_content: yes
-  register: response
-
-- name: download the kafka tarball
-  get_url:
-    url: "{{ response.json.preferred + response.json.path_info }}"
-    dest: "/tmp/{{ kafka_tgz_file }}"
-    group: root
-    owner: root
-    mode: 0644
+- include: apache-download.yml
+  vars:
+    url_path: "{{ kafka_url_path }}"
+    file_name: "{{ kafka_tgz_file }}"

@@ -1,8 +1,12 @@
 ---
 scala_version: "2.12.2"
+scala_major_version: "{{ scala_version | regex_replace('.[^.]*$', '') }}"
 scala_rpm_file: "scala-{{ scala_version }}.rpm"
 scala_rpm_url: "https://downloads.lightbend.com/scala/{{ scala_version }}/{{ scala_rpm_file }}"
 kafka_version: "0.10.2.1"
-kafka_tgz_file: "kafka_{{ scala_version }}-{{ kafka_version }}.tgz"
+kafka_tgz_file: "kafka_{{ scala_major_version }}-{{ kafka_version }}.tgz"
 kafka_url_path: "/kafka/{{ kafka_version }}/{{ kafka_tgz_file }}"
 apache_mirror_url: "https://www.apache.org/dyn/closer.cgi"
+zookeeper_version: "3.4.10"
+zookeeper_tgz_file: "zookeeper-{{ zookeeper_version }}.tar.gz"
+zookeeper_url_path: "/zookeeper/zookeeper-{{ zookeeper_version }}/{{ zookeeper_tgz_file }}"

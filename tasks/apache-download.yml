@@ -1,0 +1,19 @@
+---
+- name: determine the apache mirror to use
+  uri:
+    url: "{{ apache_mirror_url }}?path={{ url_path }}&as_json"
+    method: GET
+    return_content: yes
+  register: response
+
+- debug:
+    var: response
+
+- name: download the artifact
+  become: yes
+  get_url:
+    url: "{{ response.json.preferred + response.json.path_info }}"
+    dest: "/tmp/{{ file_name }}"
+    group: root
+    owner: root
+    mode: 0644

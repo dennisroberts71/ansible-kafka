@@ -1,0 +1,5 @@
+- name: install scala
+  become: yes
+  yum:
+    name: "{{ scala_rpm_url }}"
+    state: present
