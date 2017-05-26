@@ -31,3 +31,70 @@
     dest: "{{ zookeeper_home | dirname }}"
     owner: "{{ zookeeper_user }}"
     group: "{{ zookeeper_group }}"
+
+- name: remove the zookeeper package file
+  become: yes
+  file:
+    path: "/tmp/{{ zookeeper_tgz_file }}"
+    state: absent
+
+- name: create a symlink for zookeeper
+  become: yes
+  file:
+    path: "{{ zookeeper_home | dirname }}/zookeeper"
+    src: "{{ zookeeper_home | dirname }}/{{ zookeeper_tgz_file | replace('.tar.gz', '') }}"
+    state: link
+
+- name: create the data directory for zookeeper
+  become: yes
+  file:
+    path: "{{ zookeeper_data }}"
+    owner: "{{ zookeeper_user }}"
+    group: "{{ zookeeper_group }}"
+    mode: 0700
+    state: directory
+
+- name: create the zookeeper configuration directory
+  become: yes
+  file:
+    path: "{{ zookeeper_conf }}"
+    owner: "{{ zookeeper_user }}"
+    group: "{{ zookeeper_group }}"
+    mode: 0755
+    state: directory
+
+- name: create the zookeeper log directory
+  become: yes
+  file:
+    path: "{{ zookeeper_logs }}"
+    owner: "{{ zookeeper_user }}"
+    group: "{{ zookeeper_group }}"
+    mode: 0755
+    state: directory
+
+- name: create the java.env file
+  become: yes
+  template:
+    src: "java.env.j2"
+    dest: "{{ zookeeper_conf }}/java.env"
+    owner: "{{ zookeeper_user }}"
+    group: "{{ zookeeper_group }}"
+    mode: 0644
+
+- name: create the zookeeper-env.sh file.
+  become: yes
+  template:
+    src: "zookeeper-env.sh.j2"
+    dest: "{{ zookeeper_conf }}/zookeeper-env.sh"
+    owner: "{{ zookeeper_user }}"
+    group: "{{ zookeeper_group }}"
+    mode: 0644
+
+- name: create the zoo.cfg file
+  become: yes
+  template:
+    src: "zoo.cfg.j2"
+    dest: "{{ zookeeper_conf }}/zoo.cfg"
+    owner: "{{ zookeeper_user }}"
+    group: "{{ zookeeper_group }}"
+    mode: 0644

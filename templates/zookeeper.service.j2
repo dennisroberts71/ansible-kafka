@@ -1,0 +1,11 @@
+[Unit]
+Description=Zookeeper
+
+[Service]
+Environment="ZOOCFGDIR={{ zookeeper_conf }}"
+ExecStart={{ zookeeper_home }}/bin/zkServer.sh start
+ExecStop={{ zookeeper_home }}/bin/zkServer.sh stop
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target

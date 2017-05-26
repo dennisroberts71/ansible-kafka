@@ -6,9 +6,6 @@
     return_content: yes
   register: response
 
-- debug:
-    var: response
-
 - name: download the artifact
   become: yes
   get_url:
