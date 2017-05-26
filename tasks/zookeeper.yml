@@ -1,0 +1,33 @@
+---
+- name: create the zookeeper group
+  become: yes
+  group:
+    name: "{{ zookeeper_group }}"
+    gid: "{{ zookeeper_gid }}"
+    state: "present"
+
+- name: create the zookeeper user
+  become: yes
+  user:
+    name: "{{ zookeeper_user }}"
+    uid: "{{ zookeeper_uid }}"
+    group: "{{ zookeeper_group }}"
+    home: "{{ zookeeper_home }}"
+    createhome: no
+    shell: "/sbin/nologin"
+    state: "present"
+    system: yes
+
+- include: apache-download.yml
+  vars:
+    url_path: "{{ zookeeper_url_path }}"
+    file_name: "{{ zookeeper_tgz_file }}"
+
+- name: extract the zookeeper files
+  become: yes
+  unarchive:
+    remote_src: yes
+    src: "/tmp/{{ zookeeper_tgz_file }}"
+    dest: "{{ zookeeper_home | dirname }}"
+    owner: "{{ zookeeper_user }}"
+    group: "{{ zookeeper_group }}"

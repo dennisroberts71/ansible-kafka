@@ -5,10 +5,7 @@
 
 - include: scala.yml
 
-- include: apache-download.yml
-  vars:
-    url_path: "{{ zookeeper_url_path }}"
-    file_name: "{{ zookeeper_tgz_file }}"
+- include: zookeeper.yml
 
 - include: apache-download.yml
   vars:
