@@ -98,3 +98,12 @@
     owner: "{{ zookeeper_user }}"
     group: "{{ zookeeper_group }}"
     mode: 0644
+
+- name: create the myid file
+  become: yes
+  template:
+    src: "myid.j2"
+    dest: "{{ zookeeper_data }}/myid"
+    owner: "{{ zookeeper_user }}"
+    group: "{{ zookeeper_group }}"
+    mode: 0644

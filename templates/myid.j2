@@ -1,0 +1,5 @@
+{%- for host in groups[zookeeper_inventory_group] -%}
+    {%- if host == ansible_hostname -%}
+        {{ loop.index }}
+    {%- endif -%}
+{%- endfor -%}

@@ -3,3 +3,6 @@ dataDir={{ zookeeper_data }}/
 clientPort={{ zookeeper_client_port }}
 initLimit={{ zookeeper_init_limit }}
 syncLimit={{ zookeeper_sync_limit }}
+{% for host in groups[zookeeper_inventory_group] -%}
+server.{{ loop.index }}={{ host }}:{{ zookeeper_peer_port }}:{{ zookeeper_election_port }}
+{% endfor %}
